@@ -1,0 +1,85 @@
+//****************set ****************//
+#include<stdio.h>
+#include<set>
+using namespace std;
+int main(){
+    set<int> st;
+    //插入元素
+    st.insert(3);//insert(x)将x插入set中,并自动去重，时间复杂度O(logN)
+    st.insert(5);
+    st.insert(2);
+    st.insert(3);
+    st.insert(4);
+    //st.begin()为取st的首元素地址，而it指向此首元素地址
+    //遍历元素
+    for(set<int>::iterator it1 = st.begin(); it1 != st.end(); it1++){
+        //set的迭代器不支持it < vi.end()，因此使用it != vi.end()
+        //迭代器it1还支持自加和自减各两种操作
+        //end()取尾元素地址的下一个地址，即左闭右开
+        //end()作为迭代器末尾标志，不存储任何元素
+        printf("%d ",*it1);
+    }
+    //查找元素
+    set<int>::iterator it2 = st.find(2);
+    printf("%d ",*it2);//输出2，find(value)返回对应值为value的迭代器，时间复杂度为O(logN)
+    printf("%d\n",st.size());  //计算st的长度，输出4，时间复杂度为O(1)
+    vi.pop_back();  //删除vi的尾元素5，时间复杂度为O(1)
+    //删除单个元素
+    //st.erase(vi.begin()+3); 是错误的
+    st.erase(st.find(5)); //输出2、3、4，时间复杂度为O(logN)
+    //删除一个区间内的所有元素
+    set<int>::iterator it3 = st.find(2);
+    st.erase(it3, st.end());//删除st[1]、st[2],也就是3和4,即删除[it3,st.end())，时间复杂度为O(st.end()-it3)
+    //erase(first, last)删除[first,last)，时间复杂度为O(last-first)
+    st.clear();//清空vector中的所有元素，，时间复杂度为O(N)
+}
+
+
+//*************************map*****************//
+#include<stdio.h>
+#include<map>
+using namespace std;
+int main(){
+    map<char, int>mp;
+    //通过下标访问元素
+    mp['c'] = 20;
+    mp['c'] = 30;//被覆盖
+    printf("%d\n",mp['c']);
+    //通过迭代器访问
+    mp['z'] = 10;
+    mp['y'] = 25;
+    mp['m'] = 20;
+    mp['r'] = 30;
+    mp['a'] = 40;
+    for(map<char, int>::iterator it = mp.begin();it != mp.end(); it++){
+        printf("c %d\n",it -> first, it -> second);
+        //只有vector和string中，才允许使用迭代器加上整数的写法
+        //map会以键从小到大自动排序（因为map和set内部是使用红黑树实现的）
+    }
+
+    //查找元素（迭代器)
+    //find(key):返回键为key的迭代器，时间复杂度为O(logN)，N为map中映射的个数
+    map<char, int>::iterator it1 = mp.find('c');
+    prinf("%c %d\n", it1 -> first, it1 -> second);//输出c 30
+    //map可以使用it->first来访问键，使用it->second来访问值
+    //删除单个元素
+    //mp.erase(it),it为需要删除的元素的迭代器，时间复杂度为O(1)
+    map<char, int>::iterator it2 = mp.find('m');
+    mp.erase(it2);//删除m 20
+
+    //mp.erase(key),key为与删除的映射的键，时间复杂度为O(logN)，N为map内元素的个数
+    mp.erase('r');//删除r 30
+
+    //删除一个区间内的所有元素
+    //mp.erase(first,last)
+    //first为需要删除的区间的起始迭代器，last为需要删除的区间的末尾迭代器的下一个地址
+    //即为删除左闭右开的区间[first,last)，时间复杂度为O(last-first)
+    map<char, int>::iterator it3 = mp.find('y');
+    mp.erase(it3,mp.end());//删除it之后的所有映射，即y 25和z 10
+
+    //清空元素：clear(),时间复杂度为O(N)，N为map中元素的个数
+    mp.clear();
+
+    //获取长度：size()用来获得map中映射的对数，时间复杂度为O(1)
+    //printf("%d\n",mp.size());//输出2，表明还剩2对映射
+}
